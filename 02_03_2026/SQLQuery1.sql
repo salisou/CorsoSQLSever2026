@@ -59,6 +59,8 @@ VALUES
 ('Chiara', 'Gallo', '2002-08-14', 'F', 'GLLCHR02M54H501F'),
 ('Matteo', 'Costa', '1994-01-05', 'M', 'CSTMTT94A05H501G');
 
+
+
 --Modifica il tipo della colonna (CodiceFiscale NVARCHAR(250) => Char(16))
 --ALTER TABLE Studente
 --ALTER COLUMN CodiceFiscale CHAR(16);
@@ -73,7 +75,18 @@ Visualizzazione e filtro dati
 SELECT visualizza i dati inseriti e 
 WHERE filtra i risultati secondo criteri specifici.
 
-=, Like, <,>, !=, And, OR, IN, NOT IN, IF, IF NOT, IF NOT EXISTS
+Gli operatori logici in sql Servono per combinare condizioni nel WHERE.
+------------------------------------------------------
+| Operatore | Significato                            |
+| --------- | -------------------------------------- |
+| AND       | Tutte le condizioni devono essere vere |
+| OR        | Basta una condizione vera              |
+| NOT       | Nega una condizione                    |
+| BETWEEN   | Intervallo                             |
+| IN        | Lista di valori                        |
+| LIKE      | Ricerca testuale                       |
+| IS NULL   | Valore nullo                           |
+------------------------------------------------------
 */
 
 Select * From Studente where StudenteId = 7
@@ -88,4 +101,13 @@ Select Nome, CodiceFiscale from Studente order by Nome Desc
 Select StudenteId , CodiceFiscale,  Nome, Cognome, DataNascita, Genere  from Studente order by Nome Desc
 
 -- Restiture l'elecnco degli studenti che sono nati prima dell'anno 2000
--- Mostra solo gli studente maschi nati dopo anno 1996
+-- Restituire solo gli studente maschi nati dopo anno 1996
+
+SELECT * FROM Studente WHERE DataNascita < '2000-05-15'
+SELECT * FROM Studente WHERE Genere = 'M' AND DataNascita > '1996-12-31';
+
+-- 3) Restituire Nome e Cognome degli studenti femmina nati tra il 1998 e il 2002
+SELECT Nome, Cognome
+FROM Studente
+WHERE Genere = 'F'
+AND DataNascita BETWEEN '1998-01-01' AND '2002-12-31';
