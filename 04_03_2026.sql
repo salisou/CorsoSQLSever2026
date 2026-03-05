@@ -103,21 +103,21 @@ where il nome della colonna = il volore
 */
 
 UPDATE IscrizioneMateria SET Voto = 7.5 WHERE IscrizioneId = 1;
-UPDATE IscrizioneMateria SET Voto = 6.0 WHERE IscrizioneId = 2;
-UPDATE IscrizioneMateria SET Voto = 8.0 WHERE IscrizioneId = 3;
-UPDATE IscrizioneMateria SET Voto = 5.5 WHERE IscrizioneId = 4;
-UPDATE IscrizioneMateria SET Voto = 9.0 WHERE IscrizioneId = 5;
-UPDATE IscrizioneMateria SET Voto = 6.5 WHERE IscrizioneId = 6;
-UPDATE IscrizioneMateria SET Voto = 7.0 WHERE IscrizioneId = 7;
-UPDATE IscrizioneMateria SET Voto = 8.5 WHERE IscrizioneId = 8;
-UPDATE IscrizioneMateria SET Voto = 4.5 WHERE IscrizioneId = 9;
+UPDATE IscrizioneMateria SET Voto = 16.0 WHERE IscrizioneId = 2;
+UPDATE IscrizioneMateria SET Voto = 28.0 WHERE IscrizioneId = 3;
+UPDATE IscrizioneMateria SET Voto = 15.5 WHERE IscrizioneId = 4;
+UPDATE IscrizioneMateria SET Voto = 19.0 WHERE IscrizioneId = 5;
+UPDATE IscrizioneMateria SET Voto = 16.5 WHERE IscrizioneId = 6;
+UPDATE IscrizioneMateria SET Voto = 17.0 WHERE IscrizioneId = 7;
+UPDATE IscrizioneMateria SET Voto = 18.5 WHERE IscrizioneId = 8;
+UPDATE IscrizioneMateria SET Voto = 14.5 WHERE IscrizioneId = 9;
 UPDATE IscrizioneMateria SET Voto = 10.0 WHERE IscrizioneId = 10;
-UPDATE IscrizioneMateria SET Voto = 6.8 WHERE IscrizioneId = 11;
+UPDATE IscrizioneMateria SET Voto = 26.8 WHERE IscrizioneId = 11;
 UPDATE IscrizioneMateria SET Voto = 7.2 WHERE IscrizioneId = 12;
 UPDATE IscrizioneMateria SET Voto = 5.0 WHERE IscrizioneId = 13;
-UPDATE IscrizioneMateria SET Voto = 8.7 WHERE IscrizioneId = 14;
-UPDATE IscrizioneMateria SET Voto = 9.5 WHERE IscrizioneId = 15;
-UPDATE IscrizioneMateria SET Voto = 6.3 WHERE IscrizioneId = 16;
+UPDATE IscrizioneMateria SET Voto = 18.7 WHERE IscrizioneId = 14;
+UPDATE IscrizioneMateria SET Voto = 30.0 WHERE IscrizioneId = 15;
+UPDATE IscrizioneMateria SET Voto = 29.3 WHERE IscrizioneId = 16;
 UPDATE IscrizioneMateria SET Voto = 7.9 WHERE IscrizioneId = 17;
 UPDATE IscrizioneMateria SET Voto = 5.8 WHERE IscrizioneId = 18;
 UPDATE IscrizioneMateria SET Voto = 8.2 WHERE IscrizioneId = 19;
@@ -139,6 +139,12 @@ Update Studente SET DataNascita = '2000-12-23' WHERE DataNascita IS NULL
 UPDATE Studente SET ClasseId = 30 WHERE CodiceFiscale like 'R%'
 UPDATE Studente SET ClasseId = 5 WHERE Genere = 'F' AND StudenteId IN (1,2,3,5,7)
 
+-- Generare voti casuali (più veloce) Random =10--
+UPDATE IscrizioneMateria
+SET Voto = ROUND((RAND() * 6) + 4, 1);
+
+select * from IscrizioneMateria
+
 /***************************************************
  *       FUNZIONI AGGREGATE IN SQL                 *
  *  Servono per fare calcoli su più righe.         *
@@ -157,7 +163,7 @@ UPDATE Studente SET ClasseId = 5 WHERE Genere = 'F' AND StudenteId IN (1,2,3,5,7
 
  /*
    Restutire la lista degli studente che sono scritti ad una classe 
-   che comincia con 1A Compi da visualizzare 
+   che comincia con 1A Campi da visualizzare 
    "Nome complete dello studente e il codice fiscale"
 
    // Inner join (Join), Left join, Right Join, Full join
@@ -171,7 +177,15 @@ UPDATE Studente SET ClasseId = 5 WHERE Genere = 'F' AND StudenteId IN (1,2,3,5,7
   from Studente as s
   Inner join Classe as c 
     ON s.ClasseId = c.ClasseId
-  WHERE c.NomeClasse LIKE '2A%' and s.ClasseId is null
+  WHERE c.NomeClasse LIKE '1A%' 
+
+    Select 
+    s.Nome + ' ' + s.Cognome AS 'Nome complete dello studente',
+    s.CodiceFiscale
+  from Studente as s
+  Inner join Classe as c 
+    ON s.ClasseId = c.ClasseId
+  WHERE c.NomeClasse LIKE '1A%' AND s.Genere = 'F'
 
 
 -- COUNT() conta tuut le righe
@@ -183,14 +197,21 @@ FROM Studente
 SELECT MIN(Voto) FROM IscrizioneMateria -- Voto minimo
 SELECT MAX(Voto) FROM IscrizioneMateria -- Voto media
 
--- AVG()
+-- Studente con voto più alto
+SELECT StudenteId, MAX(Voto)
+FROM IscrizioneMateria
+GROUP BY StudenteId;
+
+--Quanti insufficienti (<6)
+SELECT COUNT(*)
+FROM IscrizioneMateria
+WHERE Voto < 6;
+
+-- AVG() Calcolare la media dei voti
 SELECT 
     i.MateriaId,
     AVG(i.Voto) AS 'Media Materia'
 FROM IscrizioneMateria AS i
 GROUP BY I.MateriaId;
-
-
--- SUM()
 
 

@@ -9,6 +9,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Elementi di soluzione", "El
 	ProjectSection(SolutionItems) = preProject
 		03_03_2026.sql = 03_03_2026.sql
 		04_03_2026.sql = 04_03_2026.sql
+		05_03_2026.sql = 05_03_2026.sql
+		Esercizi_05_03_2026.sql = Esercizi_05_03_2026.sql
 	EndProjectSection
 EndProject
 Global
